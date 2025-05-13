@@ -172,8 +172,18 @@
                                             alt="Finish"></div>
                                     </div>
                                 </div>
+
+                                <div class="progress-container" v-if="todos.length || completedTodos.length">
+                                    <div class="progress-label">
+                                        <span>Tiến độ: {{ completionPercentage }}%</span>
+                                    </div>
+                                    <div class="progress-bar">
+                                        <div class="progress-bar-fill" :style="{ width: completionPercentage + '%' }"></div>
+                                    </div>
+                                </div>
                             </template>
                         </div>
+
 
                         <ul v-if="!todos.length && showEmptyTips" class="empty-tips">
                             <li>Add Your First To-Do Item! 📝</li>
