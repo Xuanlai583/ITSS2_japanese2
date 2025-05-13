@@ -11,9 +11,9 @@
     <meta
         name="description"
         content="uiineed's Todo List Online is a minimalist, no-login-required web app that helps you manage your tasks and schedules effortlessly. Store your todos securely in your browser's local cache, and enjoy a seamless experience without the hassle of sign-ups or logins. Perfect for both personal and professional use!">
-    <link type="favicon" rel="shortcut icon" href="public/img/favicon.png"/>
-    <link href="public/css/normalize.css" rel="stylesheet" media="screen">
-    <link href="public/css/style.min.css" rel="stylesheet" media="screen">
+    <link rel="shortcut icon" href="{{ asset('img/favicon.png') }}">
+    <link href="{{ asset('css/normalize.css') }}" rel="stylesheet" media="screen">
+    <link rel="stylesheet" href="{{ asset('css/style.min.css') }}">
     <script>
         // Automatically detect and switch language
         const browserLanguage = navigator.language || navigator.userLanguage;
@@ -95,7 +95,7 @@
     </script>
     <!-- Vue 2.x Todo List -->
     <!-- <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script> -->
-    <script src="public/js/vue.js"></script>
+    <script src="{{ asset('js/vue.js') }}"></script>
 </head>
 
 <body>
@@ -158,7 +158,7 @@
                     <template>
                         <div>
                             <div v-if="!isEditing" @dblclick="editText" class="bar-message-text">
-                                {{ slogan }}
+                                [[ slogan ]]
                             </div>
                             <div v-else="v-else">
                                 <input
@@ -212,7 +212,7 @@
                             class="todo-content"
                             :class='{completed:todo.completed}'
                             @dblclick="editdTodo(todo)">
-                            {{todo.title}}</div>
+                            [[todo.title]]</div>
                         <div
                             class="todo-btn btn-finish"
                             v-if="!todo.completed"
@@ -267,7 +267,7 @@
                 </transition-group>
                 <div class="bar-message bar-bottom">
                     <div class="bar-message-text">
-                        <span v-if="leftTodosCount">{{leftTodosCount}} items remaining</span>
+                        <span v-if="leftTodosCount">[[leftTodosCount]] items remaining</span>
                         <span v-else-if="completedTodosCount">All completed, good job!</span>
                     </div>
                 </div>
@@ -276,7 +276,7 @@
             <div class="footer side-bar">
                 <div class="side-shortcut" @click="shortCutAction()" :class="{fold: isShow}">
                     <div class="shortcut-switch">
-                        <span class="shortcut-title">{{shortCut}}</span>
+                        <span class="shortcut-title">[[shortCut]]</span>
                         <span class="shortcut-name">Quicks
                                 </span>
                     </div>
@@ -460,6 +460,7 @@
     // Vue instance initialization
     var app = new Vue({
         el: '#todo-app',
+        delimiters: ['[[', ']]'], // 👈 THÊM DÒNG NÀY
         data: function() {
             return {
                 todos: todoStorage.fetch(),
