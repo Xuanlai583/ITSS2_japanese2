@@ -95,6 +95,19 @@
     <!-- Vue 2.x Todo List -->
     <!-- <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script> -->
     <script src="public/js/vue.js"></script>
+    <style>
+        /* Inline CSS to fix display issues */
+        .todo-wrapper {
+            display: block !important;
+            width: 100%;
+            margin: 40px auto;
+        }
+
+        .todo-app {
+            display: block !important;
+        }
+    </style>
+
 </head>
 
 <body>
@@ -132,7 +145,13 @@
                         <transition name="tips">
                             <div class="tips" v-if='emptyChecked' style="color:red">💡Please enter content!</div>
                         </transition>
-                        <button class="btn submit-btn" type="button" @click="addTodo">Add</button>
+                        <div class="btn-group">
+                            <button class="btn submit-btn" type="button" @click="addTodo">Add</button>
+                            <button class="btn advanced-btn" type="button" @click="showAdvancedAdd = true">
+                                <span class="advanced-icon">+</span>
+                            </button>
+                        </div>
+
                     </div>
 
                 </div>
@@ -155,30 +174,25 @@
                                     <div class="todo-btn btn-edit-submit slogan-btn" @click="saveText"><img
                                             src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTkiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCAxOSAyMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTE2LjUwODQgMTAuMzEwOUMxNy4yMzI0IDEwLjU4MjMgMTguMDM5NCAxMC4yMTU1IDE4LjMxMDkgOS40OTE1N0MxOC41ODIzIDguNzY3NiAxOC4yMTU1IDcuOTYwNjMgMTcuNDkxNiA3LjY4OTE0TDE2LjUwODQgMTAuMzEwOVpNOC45OTk5IDJMMTAuMTMyMSAxLjE3NjU1QzkuODU1OCAwLjc5NjYxOCA5LjQwNzM1IDAuNTgwNjA1IDguOTM4MDIgMC42MDEzNjhDOC40Njg3IDAuNjIyMTMgOC4wNDEwNyAwLjg3Njg5OSA3Ljc5OTM4IDEuMjc5NzRMOC45OTk5IDJaTTcuNjcxNzUgMTcuNTU3MkM3LjQyNzIyIDE4LjI5MDcgNy44MjM2MiAxOS4wODM2IDguNTU3MTMgMTkuMzI4MUM5LjI5MDY0IDE5LjU3MjcgMTAuMDgzNSAxOS4xNzYzIDEwLjMyOCAxOC40NDI4TDcuNjcxNzUgMTcuNTU3MlpNMS4wOTk2MyA3LjkyNzkzQzAuNTA3NTQxIDguNDI1MTkgMC40MzA2NjkgOS4zMDgyOCAwLjkyNzkzMSA5LjkwMDM3QzEuNDI1MTkgMTAuNDkyNSAyLjMwODI4IDEwLjU2OTMgMi45MDAzNyAxMC4wNzIxTDEuMDk5NjMgNy45Mjc5M1pNMTcuNDkxNiA3LjY4OTE0QzE1LjgwMjMgNy4wNTU2NSAxMy45ODQxIDUuNTAzNiAxMi41MDk5IDMuOTY3OTVDMTEuNzkzIDMuMjIxMjIgMTEuMTkzOSAyLjUxNzQgMTAuNzc0NCAyLjAwMDU2QzEwLjU2NTEgMS43NDI2OSAxMC40MDE3IDEuNTMyNzYgMTAuMjkxOSAxLjM4OTA4QzEwLjIzNyAxLjMxNzI3IDEwLjE5NTYgMS4yNjIxMSAxMC4xNjg2IDEuMjI1OUMxMC4xNTUxIDEuMjA3OCAxMC4xNDUzIDEuMTk0NDQgMTAuMTM5MSAxLjE4NjEyQzEwLjEzNjEgMS4xODE5NSAxMC4xMzQgMS4xNzkwNSAxMC4xMzI4IDEuMTc3NDRDMTAuMTMyMiAxLjE3NjY0IDEwLjEzMTggMS4xNzYxNiAxMC4xMzE3IDEuMTc2MDFDMTAuMTMxNyAxLjE3NTkzIDEwLjEzMTcgMS4xNzU5NCAxMC4xMzE3IDEuMTc2MDNDMTAuMTMxOCAxLjE3NjA3IDEwLjEzMTkgMS4xNzYyIDEwLjEzMTkgMS4xNzYyM0MxMC4xMzIgMS4xNzYzNyAxMC4xMzIxIDEuMTc2NTUgOC45OTk5IDJDNy44Njc2NyAyLjgyMzQ1IDcuODY3ODMgMi44MjM2NyA3Ljg2OCAyLjgyMzlDNy44NjgwOCAyLjgyNDAxIDcuODY4MjYgMi44MjQyNiA3Ljg2ODQyIDIuODI0NDdDNy44Njg3MiAyLjgyNDkgNy44NjkwOSAyLjgyNTQgNy44Njk1MyAyLjgyNTk5QzcuODcwMzkgMi44MjcxOCA3Ljg3MTUgMi44Mjg2OSA3Ljg3Mjg1IDIuODMwNTRDNy44NzU1NCAyLjgzNDIzIDcuODc5MjIgMi44MzkyNCA3Ljg4Mzg1IDIuODQ1NTNDNy44OTMxIDIuODU4MTEgNy45MDYxOSAyLjg3NTgyIDcuOTIyOTggMi44OTgzN0M3Ljk1NjU2IDIuOTQzNDUgOC4wMDQ5OSAzLjAwNzkyIDguMDY3MyAzLjA4OTQ0QzguMTkxODUgMy4yNTIzOSA4LjM3MjE3IDMuNDgzODcgOC42MDAzOCAzLjc2NTA2QzkuMDU1OTMgNC4zMjYzNSA5LjcwNjg1IDUuMDkxMjggMTAuNDkgNS45MDcwNUMxMi4wMTU4IDcuNDk2NCAxNC4xOTc3IDkuNDQ0MzUgMTYuNTA4NCAxMC4zMTA5TDE3LjQ5MTYgNy42ODkxNFpNNy42MTM5NyAyLjE5ODAxQzguMTA2NjkgNS42NDY2OSA4LjM0OTk3IDguODI5MjYgOC4zNDk5NyAxMS41QzguMzQ5OTcgMTQuMjAxNSA4LjEwMDE0IDE2LjI3MjIgNy42NzE3NSAxNy41NTcyTDEwLjMyOCAxOC40NDI4QzEwLjg5OTggMTYuNzI3OCAxMS4xNSAxNC4yOTg2IDExLjE1IDExLjVDMTEuMTUgOC42NzA3NiAxMC44OTMyIDUuMzUzMzEgMTAuMzg1OCAxLjgwMTk5TDcuNjEzOTcgMi4xOTgwMVpNMi45MDAzNyAxMC4wNzIxQzMuODgyMjggOS4yNDc0MiA1LjI5NjM2IDguMDkwMzMgNi42NDM3OSA2LjgzMDFDNy45NzY2NCA1LjU4MzUyIDkuMzQ1ODcgNC4xNDQ1OCAxMC4yMDA0IDIuNzIwMjZMNy43OTkzOCAxLjI3OTc0QzcuMTU0MDIgMi4zNTU0MiA2LjAyMzMxIDMuNTc2NjMgNC43MzExOCA0Ljc4NTEzQzMuNDUzNjQgNS45Nzk5OCAyLjExNzcyIDcuMDcyODkgMS4wOTk2MyA3LjkyNzkzTDIuOTAwMzcgMTAuMDcyMVoiIGZpbGw9IiMzMzMyMkUiLz4KPC9zdmc+Cg=="
                                             alt="Finish"></div>
-                                </div>
-                                <div class="progress-container" v-if="todos.length || completedTodos.length">
-                                    <div class="progress-label">
-                                        <span>Tiến độ: {{ completionPercentage }}%</span>
-                                    </div>
-                                    <div class="progress-bar">
-                                        <div class="progress-bar-fill" :style="{ width: completionPercentage + '%' }"></div>
-                                    </div>
-                                </div>
-                            </template>
-                        </div>
 
 
-                        <ul v-if="!todos.length && showEmptyTips" class="empty-tips">
-                            <li>Add Your First To-Do Item! 📝</li>
-                            <li>Usage Tips 💡:</li>
-                            <li>✔️ Press Enter to submit actions.</li>
-                            <li>✔️ Drag to reorder your to-dos (PC only)</li>
-                            <li>✔️ Double-click to edit slogan and tasks.</li>
-                            <li>✔️ Access quick actions in the right sidebar.</li>
-                            <li>🔒 Your data is stored locally in your browser.</li>
-                            <li>📝 Supports data download and import.
-                            </li>
-                        </ul>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+
+                    <ul v-if="!todos.length && showEmptyTips" class="empty-tips">
+                        <li>Add Your First To-Do Item! 📝</li>
+                        <li>Usage Tips 💡:</li>
+                        <li>✔️ Press Enter to submit actions.</li>
+                        <li>✔️ Drag to reorder your to-dos (PC only)</li>
+                        <li>✔️ Double-click to edit slogan and tasks.</li>
+                        <li>✔️ Access quick actions in the right sidebar.</li>
+                        <li>🔒 Your data is stored locally in your browser.</li>
+                        <li>📝 Supports data download and import.
+                        </li>
+                    </ul>
+
 
                     <transition-group name="drag" class="todo-list" tag="ul" mode="in-out" @before-enter="beforeEnter"
                         @enter="enter" @after-enter="afterEnter" :css="false" appear="appear">
@@ -187,7 +201,9 @@
                             @dragenter="dragenter($event, index)" @dragover="dragover($event, index)"
                             @dragstart="dragstart(index)" :data-delay="index * 150 * delayTime" v-show="show"
                             :draggable="!(editedTodo !== null && editedTodo.id === todo.id)">
-                            <div class="todo-content" :class='{completed:todo.completed}' @dblclick="editdTodo(todo)">
+                            <div class="todo-content" :class='{completed:todo.completed}' @dblclick="editdTodo(todo)"
+                                @click="viewTaskDetail(todo)">
+
                                 {{todo.title}}</div>
                             <div class="todo-btn btn-finish" v-if="!todo.completed" @click="markAsCompleted(todo)">
                             </div>
@@ -357,8 +373,298 @@
                 </div>
             </div>
 
+            <!-- Task Detail Popup -->
+            <div class="task-detail-popup" v-if="selectedTask" @click.self="closeTaskDetail">
+                <div class="task-detail-content">
+                    <div class="task-detail-header">
+                        <h3>Chi tiết công việc</h3>
+                        <div class="task-detail-close" @click="closeTaskDetail">×</div>
+                    </div>
+                    <div class="task-detail-body">
+                        <div class="task-detail-item">
+                            <div class="task-detail-label">Tên công việc:</div>
+                            <div class="task-detail-value">{{ selectedTask.title }}</div>
+                        </div>
+                        <div class="task-detail-item">
+                            <div class="task-detail-label">Ngày bắt đầu:</div>
+                            <div class="task-detail-value">{{ selectedTask.startDate || 'Chưa thiết lập' }}</div>
+                        </div>
+                        <div class="task-detail-item">
+                            <div class="task-detail-label">Ngày kết thúc:</div>
+                            <div class="task-detail-value">{{ selectedTask.endDate || 'Chưa thiết lập' }}</div>
+                        </div>
+                        <div class="task-detail-item">
+                            <div class="task-detail-label">Mô tả công việc:</div>
+                            <div class="task-detail-value">{{ selectedTask.description || 'Không có mô tả' }}</div>
+                        </div>
+                        <div class="task-detail-item">
+                            <div class="task-detail-label">Tiến độ công việc:</div>
+                            <div class="task-detail-value">
+                                <div class="progress-bar-container">
+                                    <div class="progress-bar" :style="{ width: selectedTask.progress + '%' }"></div>
+                                    <span class="progress-text">{{ selectedTask.progress }}%</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="task-detail-item">
+                            <div class="task-detail-label">Trạng thái:</div>
+                            <div class="task-detail-value">{{ selectedTask.completed ? 'Hoàn thành' : 'Đang thực hiện'
+                                }}</div>
+                        </div>
+
+                        <!-- Subtasks Section -->
+                        <div class="task-detail-subtasks">
+                            <div class="subtasks-header">
+                                <h4>Công việc con</h4>
+                                <button class="btn-add-subtask" @click="showAddSubtask = true">+ Thêm</button>
+                            </div>
+
+                            <!-- Add Subtask Form -->
+                            <div class="add-subtask-form" v-if="showAddSubtask">
+                                <input type="text" v-model="newSubtaskTitle" placeholder="Tên công việc con..."
+                                    class="subtask-input">
+                                <div class="subtask-form-actions">
+                                    <button class="btn-save-subtask" @click="addSubtask">Lưu</button>
+                                    <button class="btn-cancel-subtask" @click="showAddSubtask = false">Hủy</button>
+                                </div>
+                            </div>
+
+                            <!-- Subtasks List -->
+                            <div class="subtasks-list" v-if="selectedTask.subtasks && selectedTask.subtasks.length > 0">
+                                <div class="subtask-item" v-for="(subtask, index) in selectedTask.subtasks"
+                                    :key="index">
+                                    <div class="subtask-header">
+                                        <input type="checkbox" v-model="subtask.completed" @change="updateTaskProgress">
+                                        <span class="subtask-title" :class="{ 'completed': subtask.completed }">{{
+                                            subtask.title }}</span>
+                                        <div class="subtask-actions">
+                                            <button class="btn-edit-subtask" @click="editSubtask(subtask)">✎</button>
+                                            <button class="btn-delete-subtask" @click="deleteSubtask(index)">×</button>
+                                        </div>
+                                    </div>
+                                    <div class="subtask-details" v-if="subtask.showDetails">
+                                        <div class="subtask-detail-row">
+                                            <div class="subtask-detail-label">Ngày bắt đầu:</div>
+                                            <div class="subtask-detail-value">{{ subtask.startDate || 'Chưa thiết lập'
+                                                }}</div>
+                                        </div>
+                                        <div class="subtask-detail-row">
+                                            <div class="subtask-detail-label">Ngày kết thúc:</div>
+                                            <div class="subtask-detail-value">{{ subtask.endDate || 'Chưa thiết lập' }}
+                                            </div>
+                                        </div>
+                                        <div class="subtask-detail-row" v-if="subtask.description">
+                                            <div class="subtask-detail-label">Mô tả:</div>
+                                            <div class="subtask-detail-value">{{ subtask.description }}</div>
+                                        </div>
+                                    </div>
+                                    <div class="subtask-toggle" @click="toggleSubtaskDetails(subtask)">
+                                        {{ subtask.showDetails ? '▲ Thu gọn' : '▼ Xem thêm' }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div v-else class="no-subtasks">Chưa có công việc con</div>
+                        </div>
+                    </div>
+                    <div class="task-detail-actions">
+                        <button class="btn task-detail-btn" @click="editTaskDetail">Sửa</button>
+                        <button class="btn task-detail-btn" @click="closeTaskDetail">Đóng</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Edit Task Detail Popup -->
+            <div class="task-detail-popup" v-if="editingTask" @click.self="cancelEditTaskDetail">
+                <div class="task-detail-content">
+                    <div class="task-detail-header">
+                        <h3>Sửa công việc</h3>
+                        <div class="task-detail-close" @click="cancelEditTaskDetail">×</div>
+                    </div>
+                    <div class="task-detail-body">
+                        <div class="task-detail-item">
+                            <div class="task-detail-label">Tên công việc:</div>
+                            <input type="text" class="task-detail-input" v-model="editingTask.title">
+                        </div>
+                        <div class="task-detail-item">
+                            <div class="task-detail-label">Ngày bắt đầu:</div>
+                            <input type="date" class="task-detail-input" v-model="editingTask.startDate">
+                        </div>
+                        <div class="task-detail-item">
+                            <div class="task-detail-label">Ngày kết thúc:</div>
+                            <input type="date" class="task-detail-input" v-model="editingTask.endDate">
+                        </div>
+                        <div class="task-detail-item">
+                            <div class="task-detail-label">Mô tả công việc:</div>
+                            <textarea class="task-detail-textarea" v-model="editingTask.description"></textarea>
+                        </div>
+                        <div class="task-detail-item">
+                            <div class="task-detail-label">Tiến độ công việc:</div>
+                            <div class="task-detail-value">
+                                <input type="range" min="0" max="100" class="progress-slider"
+                                    v-model.number="editingTask.progress">
+                                <span class="progress-text">{{ editingTask.progress }}%</span>
+                            </div>
+                        </div>
+                        <div class="task-detail-item">
+                            <div class="task-detail-label">Trạng thái:</div>
+                            <div class="task-detail-value">
+                                <select v-model="editingTask.completed" class="task-detail-select">
+                                    <option :value="false">Đang thực hiện</option>
+                                    <option :value="true">Đã hoàn thành</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Edit Subtasks Section -->
+                        <div class="task-detail-subtasks">
+                            <div class="subtasks-header">
+                                <h4>Công việc con</h4>
+                                <button class="btn-add-subtask" @click="showEditSubtask = true">+ Thêm</button>
+                            </div>
+
+                            <!-- Add Subtask Form in Edit Mode -->
+                            <div class="add-subtask-form" v-if="showEditSubtask">
+                                <input type="text" v-model="newSubtaskTitle" placeholder="Tên công việc con..."
+                                    class="subtask-input">
+                                <div class="subtask-form-actions">
+                                    <button class="btn-save-subtask" @click="addSubtaskToEdit">Lưu</button>
+                                    <button class="btn-cancel-subtask" @click="showEditSubtask = false">Hủy</button>
+                                </div>
+                            </div>
+
+                            <!-- Subtasks List in Edit Mode -->
+                            <div class="subtasks-list" v-if="editingTask.subtasks && editingTask.subtasks.length > 0">
+                                <div class="subtask-item" v-for="(subtask, index) in editingTask.subtasks" :key="index">
+                                    <input type="checkbox" v-model="subtask.completed">
+                                    <input type="text" class="subtask-edit-input" v-model="subtask.title">
+                                    <button class="btn-delete-subtask" @click="deleteSubtaskFromEdit(index)">×</button>
+                                </div>
+                            </div>
+                            <div v-else class="no-subtasks">Chưa có công việc con</div>
+                        </div>
+                    </div>
+                    <div class="task-detail-actions">
+                        <button class="btn task-detail-btn" @click="saveTaskDetail">Lưu</button>
+                        <button class="btn task-detail-btn" @click="cancelEditTaskDetail">Hủy</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Advanced Add Task Modal -->
+            <div class="task-detail-popup" v-if="showAdvancedAdd" @click.self="cancelAdvancedAdd">
+                <div class="task-detail-content">
+                    <div class="task-detail-header">
+                        <h3>Thêm công việc</h3>
+                        <div class="task-detail-close" @click="cancelAdvancedAdd">×</div>
+                    </div>
+                    <div class="task-detail-body">
+                        <div class="task-detail-item">
+                            <div class="task-detail-label">Tên công việc:</div>
+                            <input type="text" class="task-detail-input" v-model="advancedTodo.title">
+                        </div>
+                        <div class="task-detail-item">
+                            <div class="task-detail-label">Ngày bắt đầu:</div>
+                            <input type="date" class="task-detail-input" v-model="advancedTodo.startDate">
+                        </div>
+                        <div class="task-detail-item">
+                            <div class="task-detail-label">Ngày kết thúc:</div>
+                            <input type="date" class="task-detail-input" v-model="advancedTodo.endDate">
+                        </div>
+                        <div class="task-detail-item">
+                            <div class="task-detail-label">Mô tả công việc:</div>
+                            <textarea class="task-detail-textarea" v-model="advancedTodo.description"></textarea>
+                        </div>
+                        <div class="task-detail-item">
+                            <div class="task-detail-label">Tiến độ công việc:</div>
+                            <div class="task-detail-value">
+                                <input type="range" min="0" max="100" class="progress-slider"
+                                    v-model.number="advancedTodo.progress">
+                                <span class="progress-text">{{ advancedTodo.progress }}%</span>
+                            </div>
+                        </div>
+
+                        <!-- Subtasks Section -->
+                        <div class="task-detail-subtasks">
+                            <div class="subtasks-header">
+                                <h4>Công việc con</h4>
+                                <button class="btn-add-subtask" @click="showAddAdvancedSubtask = true">+ Thêm</button>
+                            </div>
+
+                            <!-- Add Subtask Form -->
+                            <div class="add-subtask-form" v-if="showAddAdvancedSubtask">
+                                <input type="text" v-model="newSubtaskTitle" placeholder="Tên công việc con..."
+                                    class="subtask-input">
+                                <div class="subtask-form-actions">
+                                    <button class="btn-save-subtask" @click="addAdvancedSubtask">Lưu</button>
+                                    <button class="btn-cancel-subtask"
+                                        @click="showAddAdvancedSubtask = false">Hủy</button>
+                                </div>
+                            </div>
+
+                            <!-- Subtasks List -->
+                            <div class="subtasks-list" v-if="advancedTodo.subtasks && advancedTodo.subtasks.length > 0">
+                                <div class="subtask-item" v-for="(subtask, index) in advancedTodo.subtasks"
+                                    :key="index">
+                                    <input type="checkbox" v-model="subtask.completed">
+                                    <input type="text" class="subtask-edit-input" v-model="subtask.title">
+                                    <button class="btn-delete-subtask" @click="deleteAdvancedSubtask(index)">×</button>
+                                </div>
+                            </div>
+                            <div v-else class="no-subtasks">Chưa có công việc con</div>
+                        </div>
+                    </div>
+                    <div class="task-detail-actions">
+                        <button class="btn task-detail-btn" @click="saveAdvancedTodo">Lưu</button>
+                        <button class="btn task-detail-btn" @click="cancelAdvancedAdd">Hủy</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Subtask Edit Form Popup -->
+            <div class="task-detail-popup" v-if="showEditSubtaskForm" @click.self="cancelEditSubtask">
+                <div class="task-detail-content">
+                    <div class="task-detail-header">
+                        <h3>Chỉnh sửa công việc con</h3>
+                        <div class="task-detail-close" @click="cancelEditSubtask">×</div>
+                    </div>
+                    <div class="task-detail-body">
+                        <div class="task-detail-item">
+                            <div class="task-detail-label">Tên công việc con:</div>
+                            <input type="text" class="task-detail-input" v-model="editingSubtask.title">
+                        </div>
+                        <div class="task-detail-item">
+                            <div class="task-detail-label">Ngày bắt đầu:</div>
+                            <input type="date" class="task-detail-input" v-model="editingSubtask.startDate">
+                        </div>
+                        <div class="task-detail-item">
+                            <div class="task-detail-label">Ngày kết thúc:</div>
+                            <input type="date" class="task-detail-input" v-model="editingSubtask.endDate">
+                        </div>
+                        <div class="task-detail-item">
+                            <div class="task-detail-label">Mô tả công việc:</div>
+                            <textarea class="task-detail-textarea" v-model="editingSubtask.description"></textarea>
+                        </div>
+                        <div class="task-detail-item">
+                            <div class="task-detail-label">Trạng thái:</div>
+                            <div class="task-detail-value">
+                                <select v-model="editingSubtask.completed" class="task-detail-select">
+                                    <option :value="false">Đang thực hiện</option>
+                                    <option :value="true">Đã hoàn thành</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="task-detail-actions">
+                        <button class="btn task-detail-btn" @click="saveEditSubtask">Lưu</button>
+                        <button class="btn task-detail-btn" @click="cancelEditSubtask">Hủy</button>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
+
+
     <script>
         // localStorage operations
         var STORAGE_KEY = 'uiineed-todos';
@@ -382,7 +688,8 @@
             el: '#todo-app',
             data: function () {
                 return {
-                    todos: todoStorage.fetch(),
+                    todos: todoStorage.fetch() || [],
+
                     newTodoTitle: '',
                     editedTodo: null,
                     intention: 'all', // Default: all
@@ -396,9 +703,26 @@
                     shortCut: 'OPEN✨',
                     popShow: true,
                     windowWidth: document.documentElement.clientWidth,
-                    slogan: this.getSlogan(),
+                    slogan: "Act Now, Simplify Life.☕", // Default value
                     isEditing: false,
-                    originalSlogan: ""
+                    originalSlogan: "",
+                    selectedTask: null,
+                    editingTask: null,
+                    showAddSubtask: false,
+                    showEditSubtask: false,
+                    newSubtaskTitle: '',
+                    showAdvancedAdd: false,
+                    advancedTodo: {
+                        title: '',
+                        startDate: '',
+                        endDate: '',
+                        description: '',
+                        progress: 0,
+                        subtasks: []
+                    },
+                    showAddAdvancedSubtask: false,
+                    editingSubtask: null,
+                    showEditSubtaskForm: false
                 };
             },
             watch: {
@@ -420,6 +744,7 @@
                         this.$refs.sloganInput.focus();
                     });
                 },
+
                 saveText() {
                     this.isEditing = false;
                     localStorage.setItem('uiineed-slogan', this.slogan);
@@ -460,7 +785,13 @@
                         id: todoStorage.uid++,
                         title: this.newTodoTitle,
                         completed: false,
-                        removed: false
+                        removed: false,
+                        startDate: '',
+                        endDate: '',
+                        description: '',
+                        progress: 0, // Tiến độ công việc (0-100)
+                        subtasks: [] // Danh sách công việc con
+
                     });
                     this.newTodoTitle = '';
                     this.checkEmpty = false;
@@ -590,6 +921,270 @@
                 },
                 saveLanguage(lang) {
                     localStorage.setItem('uiineed-todos-lang', lang);
+                },
+                closeTaskDetail() {
+                    this.selectedTask = null;
+                },
+                editTaskDetail() {
+                    this.editingTask = JSON.parse(JSON.stringify(this.selectedTask)); // Deep copy
+                    if (!this.editingTask.subtasks) {
+                        this.editingTask.subtasks = [];
+                    }
+                    if (this.editingTask.progress === undefined) {
+                        this.editingTask.progress = this.editingTask.completed ? 100 : 0;
+                    }
+                },
+                cancelEditTaskDetail() {
+                    this.editingTask = null;
+                    this.showEditSubtask = false;
+                },
+                saveTaskDetail() {
+                    if (this.editingTask.title) {
+                        const index = this.todos.findIndex(t => t.id === this.editingTask.id);
+                        if (index !== -1) {
+                            // Update all properties of the todo
+                            this.todos[index].title = this.editingTask.title;
+                            this.todos[index].startDate = this.editingTask.startDate || '';
+                            this.todos[index].endDate = this.editingTask.endDate || '';
+                            this.todos[index].description = this.editingTask.description || '';
+                            this.todos[index].completed = this.editingTask.completed || false;
+                            this.todos[index].progress = this.editingTask.progress || 0;
+                            this.todos[index].subtasks = this.editingTask.subtasks || [];
+
+                            // Also update the selectedTask to show the updated details
+                            this.selectedTask = { ...this.todos[index] };
+                        }
+                        this.editingTask = null;
+                        this.showEditSubtask = false;
+                    }
+                },
+                viewTaskDetail(todo) {
+                    // Tạo bản sao sâu của todo
+                    this.selectedTask = JSON.parse(JSON.stringify(todo));
+
+                    // Đảm bảo các thuộc tính cần thiết tồn tại
+                    if (!this.selectedTask.subtasks) {
+                        this.$set(this.selectedTask, 'subtasks', []);
+                    }
+                    if (this.selectedTask.progress === undefined) {
+                        this.$set(this.selectedTask, 'progress', this.selectedTask.completed ? 100 : 0);
+                    }
+                },
+                addSubtask() {
+                    if (this.newSubtaskTitle.trim() === '') return;
+
+                    // Đảm bảo selectedTask tồn tại
+                    if (!this.selectedTask) return;
+
+                    // Đảm bảo subtasks được khởi tạo
+                    if (!this.selectedTask.subtasks) {
+                        this.$set(this.selectedTask, 'subtasks', []);
+                    }
+
+                    // Thêm subtask mới với các trường giống task chính
+                    const newSubtask = {
+                        id: Date.now(),
+                        title: this.newSubtaskTitle,
+                        completed: false,
+                        startDate: '',
+                        endDate: '',
+                        description: '',
+                        progress: 0,
+                        subtasks: [] // Cho phép subtask lồng nhau
+                    };
+
+                    this.selectedTask.subtasks.push(newSubtask);
+
+                    // Cập nhật công việc gốc trong mảng todos
+                    const index = this.todos.findIndex(t => t.id === this.selectedTask.id);
+                    if (index !== -1) {
+                        if (!this.todos[index].subtasks) {
+                            this.$set(this.todos[index], 'subtasks', []);
+                        }
+                        this.todos[index].subtasks = [...this.selectedTask.subtasks];
+                    }
+
+                    // Reset form
+                    this.newSubtaskTitle = '';
+                    this.showAddSubtask = false;
+
+                    // Cập nhật tiến độ
+                    this.updateTaskProgress();
+                },
+                deleteSubtask(index) {
+                    if (!this.selectedTask || !this.selectedTask.subtasks) return;
+
+                    this.selectedTask.subtasks.splice(index, 1);
+
+                    // Cập nhật lại tiến độ công việc
+                    this.updateTaskProgress();
+                },
+                updateTaskProgress() {
+                    if (!this.selectedTask) return;
+
+                    // Đảm bảo subtasks được khởi tạo
+                    if (!this.selectedTask.subtasks) {
+                        this.$set(this.selectedTask, 'subtasks', []);
+                    }
+
+                    if (this.selectedTask.subtasks.length === 0) {
+                        this.selectedTask.progress = this.selectedTask.completed ? 100 : 0;
+                    } else {
+                        const completedCount = this.selectedTask.subtasks.filter(subtask => subtask.completed).length;
+                        const totalCount = this.selectedTask.subtasks.length;
+                        this.selectedTask.progress = Math.round((completedCount / totalCount) * 100);
+
+                        // Tự động cập nhật trạng thái completed dựa trên tiến độ
+                        if (this.selectedTask.progress === 100 && !this.selectedTask.completed) {
+                            this.selectedTask.completed = true;
+                        } else if (this.selectedTask.progress < 100 && this.selectedTask.completed) {
+                            // Nếu tiến độ < 100% nhưng đang được đánh dấu là hoàn thành, cập nhật lại
+                            this.selectedTask.completed = false;
+                        }
+                    }
+
+                    // Cập nhật công việc gốc
+                    const index = this.todos.findIndex(t => t.id === this.selectedTask.id);
+                    if (index !== -1) {
+                        if (!this.todos[index].progress) {
+                            this.$set(this.todos[index], 'progress', 0);
+                        }
+                        this.todos[index].progress = this.selectedTask.progress;
+
+                        if (!this.todos[index].subtasks) {
+                            this.$set(this.todos[index], 'subtasks', []);
+                        }
+                        this.todos[index].subtasks = [...this.selectedTask.subtasks];
+
+                        // Cập nhật trạng thái completed của task gốc
+                        this.todos[index].completed = this.selectedTask.completed;
+                    }
+                },
+                addSubtaskToEdit() {
+                    if (this.newSubtaskTitle.trim() === '') return;
+                    if (!this.editingTask.subtasks) {
+                        this.editingTask.subtasks = [];
+                    }
+
+                    // Thêm subtask mới với các trường giống task chính
+                    const newSubtask = {
+                        id: Date.now(),
+                        title: this.newSubtaskTitle,
+                        completed: false,
+                        startDate: '',
+                        endDate: '',
+                        description: '',
+                        progress: 0,
+                        subtasks: [] // Cho phép subtask lồng nhau
+                    };
+
+                    this.editingTask.subtasks.push(newSubtask);
+                    this.newSubtaskTitle = '';
+                    this.showEditSubtask = false;
+                },
+                deleteSubtaskFromEdit(index) {
+                    this.editingTask.subtasks.splice(index, 1);
+                },
+                addAdvancedSubtask() {
+                    if (this.newSubtaskTitle.trim() === '') return;
+
+                    // Thêm subtask mới với các trường giống task chính
+                    const newSubtask = {
+                        id: Date.now(),
+                        title: this.newSubtaskTitle,
+                        completed: false,
+                        startDate: '',
+                        endDate: '',
+                        description: '',
+                        progress: 0,
+                        subtasks: [] // Cho phép subtask lồng nhau
+                    };
+
+                    this.advancedTodo.subtasks.push(newSubtask);
+                    this.newSubtaskTitle = '';
+                    this.showAddAdvancedSubtask = false;
+                },
+                deleteAdvancedSubtask(index) {
+                    this.advancedTodo.subtasks.splice(index, 1);
+                },
+                saveAdvancedTodo() {
+                    this.todos.push({
+                        id: todoStorage.uid++,
+                        title: this.advancedTodo.title,
+                        completed: false,
+                        removed: false,
+                        startDate: this.advancedTodo.startDate,
+                        endDate: this.advancedTodo.endDate,
+                        description: this.advancedTodo.description,
+                        progress: this.advancedTodo.progress,
+                        subtasks: this.advancedTodo.subtasks
+                    });
+                    this.advancedTodo = {
+                        title: '',
+                        startDate: '',
+                        endDate: '',
+                        description: '',
+                        progress: 0,
+                        subtasks: []
+                    };
+                    this.showAdvancedAdd = false;
+                    this.showAddAdvancedSubtask = false;
+                },
+                cancelAdvancedAdd() {
+                    this.advancedTodo = {
+                        title: '',
+                        startDate: '',
+                        endDate: '',
+                        description: '',
+                        progress: 0,
+                        subtasks: []
+                    };
+                    this.showAdvancedAdd = false;
+                    this.showAddAdvancedSubtask = false;
+                },
+                toggleSubtaskDetails(subtask) {
+                    // Sử dụng $set để đảm bảo tính phản ứng
+                    if (subtask.showDetails === undefined) {
+                        this.$set(subtask, 'showDetails', true);
+                    } else {
+                        subtask.showDetails = !subtask.showDetails;
+                    }
+                },
+                editSubtask(subtask) {
+                    // Hiển thị form chỉnh sửa subtask
+                    this.editingSubtask = JSON.parse(JSON.stringify(subtask));
+                    this.showEditSubtaskForm = true;
+                },
+                cancelEditSubtask() {
+                    this.editingSubtask = null;
+                    this.showEditSubtaskForm = false;
+                },
+                saveEditSubtask() {
+                    if (!this.editingSubtask || !this.editingSubtask.title || !this.selectedTask) return;
+
+                    // Tìm vị trí của subtask trong mảng
+                    const index = this.selectedTask.subtasks.findIndex(s => s.id === this.editingSubtask.id);
+                    if (index !== -1) {
+                        // Cập nhật subtask
+                        this.selectedTask.subtasks[index] = { ...this.editingSubtask };
+
+                        // Cập nhật trong công việc gốc
+                        const todoIndex = this.todos.findIndex(t => t.id === this.selectedTask.id);
+                        if (todoIndex !== -1) {
+                            if (!this.todos[todoIndex].subtasks) {
+                                this.$set(this.todos[todoIndex], 'subtasks', []);
+                            }
+                            this.todos[todoIndex].subtasks = [...this.selectedTask.subtasks];
+                        }
+
+                        // Cập nhật tiến độ
+                        this.updateTaskProgress();
+
+                    }
+
+                    // Đóng form
+                    this.showEditSubtaskForm = false;
+                    this.editingSubtask = null;
                 }
             },
 
@@ -604,6 +1199,9 @@
                         that.windowWidth = window.fullWidth; // width
                     })()
                 };
+                // Load slogan from localStorage
+                this.slogan = localStorage.getItem('uiineed-slogan') || "Act Now, Simplify Life.☕";
+                console.log('Vue mounted successfully', this.todos);
             },
 
             directives: {
@@ -651,16 +1249,19 @@
                 showEmptyTips() {
                     return this.filteredTodos.length === 0 && this.intention !== 'removed';
                 }
+
             }
         })
     </script>
     <script>
         // Fetch data from localStorage
         var fetchedTodos = todoStorage.fetch();
+        console.log('Todos fetched from storage:', fetchedTodos);
 
         const handleClickDownload = () => {
             const todosText = JSON.stringify(todoStorage.fetch(), null, 2);
-            const date = new Date().toISOString().replace(/-|:|\.\d+/g, '');
+            const date = new Date().toISOString().replace(/-|:|\.(\d+)/g, '');
+
             const fileName = `todos-${date.slice(0, 8)}-${date.slice(9, 15)}.txt`;
 
             const element = document.createElement('a');
@@ -672,6 +1273,14 @@
             document.body.removeChild(element);
         };
 
+        // Add debug point
+        console.log('Vue instance created:', app);
+        console.log('DOM elements:', {
+            todoWrapper: document.querySelector('.todo-wrapper'),
+            todoApp: document.querySelector('#todo-app'),
+            taskDetailPopup: document.querySelector('.task-detail-popup')
+        });
+
         // Import file
         let tempFileInput = null; // Store dynamically created file input element
         document.getElementById('import').addEventListener('click', function () {
@@ -681,6 +1290,7 @@
                 tempFileInput.accept = '.txt,.json';
                 tempFileInput.style.display = 'none';
                 this.parentNode.appendChild(tempFileInput);
+
 
                 tempFileInput.addEventListener('change', function (event) {
                     var file = event.target.files[0];
@@ -733,38 +1343,9 @@
             app.todos = data;
         }
 
-    </script>
 
-    <!-- Toast Notification -->
-    <div id="toast-notification"
-        style="display:none;position:fixed;right:24px;bottom:24px;z-index:9999;min-width:220px;padding:16px 24px;background:#333;color:#fff;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.15);font-size:16px;transition:opacity 0.3s;">
-        This is a notification message! Hello World!
-    </div>
-    <script>
-        // filepath: d:\Study\ITSS2\ITSS2_japanese2\index.html
-        // ...existing code...
 
-        function showToast(message = "This is a notification message!") {
-            const toast = document.getElementById('toast-notification');
-            toast.textContent = message;
-            toast.style.display = 'block';
-            toast.style.opacity = '1';
-            setTimeout(() => {
-                toast.style.opacity = '0';
-                setTimeout(() => {
-                    toast.style.display = 'none';
-                }, 300);
-            }, 5000); // 5s
-        }
-
-        // Hiển thị lần đầu
-        showToast();
-
-        // Lặp lại mỗi 1 phút
-        setInterval(() => {
-            showToast();
-        }, 20000);
     </script>
 </body>
 
-</html>
+</html
