@@ -13,6 +13,8 @@
     <link type="favicon" rel="shortcut icon" href="public/img/favicon.png" />
     <link href="public/css/normalize.css" rel="stylesheet" media="screen">
     <link href="public/css/style.min.css" rel="stylesheet" media="screen">
+    <link href="public/css/style.css" rel="stylesheet" media="screen">
+
     <script>
         // Automatically detect and switch language
         const browserLanguage = navigator.language || navigator.userLanguage;
@@ -1343,8 +1345,75 @@
             app.todos = data;
         }
 
+    </script>
+
+    <!-- Toast Notification -->
+    <div class="toast-notification">
+        This is a notification message! Hello World!
+    </div>
+    <script>
+        // filepath: d:\Study\ITSS2\ITSS2_japanese2\index.html
+        // ...existing code...
+
+        function showToast() {
+            const todos = app.leftTodos; // Lấy các công việc chưa hoàn thành
+            if (todos.length === 0) {
+                return; // Không hiển thị gì nếu không có công việc
+            }
+            // Chọn một công việc ngẫu nhiên
+            const randomIndex = Math.floor(Math.random() * todos.length);
+            const randomTodo = todos[randomIndex];
+
+            // Tính thời gian còn lại
+            let timeRemaining = '';
+            if (randomTodo.endDate) {
+                const endDate = new Date(randomTodo.endDate);
+                const now = new Date();
+                const diffTime = endDate - now;
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+                if (diffDays > 0) {
+                    timeRemaining = `còn ${diffDays} ngày`;
+                } else if (diffDays === 0) {
+                    timeRemaining = 'hết hạn hôm nay';
+                } else {
+                    timeRemaining = `đã quá hạn ${Math.abs(diffDays)} ngày`;
+                }
+            } else {
+                timeRemaining = 'chưa có hạn';
+            }
+
+            const toast = document.querySelector('.toast-notification');
+
+            // Tạo nội dung thông báo
+            let message = `Nhắc nhở: "${randomTodo.title}"\n`;
+            message += `Thời gian: ${timeRemaining}`;
 
 
+            toast.style.whiteSpace = 'pre-line';
+            toast.textContent = message;
+
+
+            // Hiển thị toast
+            toast.classList.add('showing');
+            toast.classList.remove('hiding');
+
+            setTimeout(() => {
+                toast.classList.remove('showing');
+                toast.classList.add('hiding');
+                setTimeout(() => {
+                    toast.classList.remove('hiding');
+                }, 500); // Đợi animation kết thúc
+            }, 3000);
+        }
+
+        // Hiển thị lần đầu
+        showToast();
+
+        // Lặp lại mỗi 1 phút
+        setInterval(() => {
+            showToast();
+        }, 4000);
     </script>
 </body>
 
