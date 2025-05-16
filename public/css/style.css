@@ -1760,3 +1760,33 @@ span.shortcut-name {
 .custom-alert-btn.cancel {
   background: var(--deleted);
 }
+
+
+.toast-notification {
+    display: none;
+    position: fixed;
+    right: 24px;
+    bottom: 24px;
+    z-index: 9999;
+    min-width: 220px;
+    padding: 16px 24px;
+    background: #ffffff;
+    color: #000000;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    font-size: 16px;
+    transform: translateX(150%); /* Thêm dòng này */
+    opacity: 0; /* Thêm dòng này */
+    transition:  transform 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55), opacity 0.4s ease; /* Thêm dòng này */
+}
+
+.toast-notification.showing {
+    display: block;
+    transform: translateX(0);
+    opacity: 1;
+}
+
+.toast-notification.hiding {
+    transform: translateX(150%);
+    opacity: 0;
+}

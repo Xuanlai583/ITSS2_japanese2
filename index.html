@@ -13,6 +13,8 @@
     <link type="favicon" rel="shortcut icon" href="public/img/favicon.png" />
     <link href="public/css/normalize.css" rel="stylesheet" media="screen">
     <link href="public/css/style.min.css" rel="stylesheet" media="screen">
+    <link href="public/css/style.css" rel="stylesheet" media="screen">
+
     <script>
         // Automatically detect and switch language
         const browserLanguage = navigator.language || navigator.userLanguage;
@@ -728,25 +730,41 @@
     </script>
 
     <!-- Toast Notification -->
-    <div id="toast-notification"
-        style="display:none;position:fixed;right:24px;bottom:24px;z-index:9999;min-width:220px;padding:16px 24px;background:#333;color:#fff;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.15);font-size:16px;transition:opacity 0.3s;">
+    <div class="toast-notification">
         This is a notification message! Hello World!
     </div>
     <script>
         // filepath: d:\Study\ITSS2\ITSS2_japanese2\index.html
         // ...existing code...
 
-        function showToast(message = "This is a notification message!") {
-            const toast = document.getElementById('toast-notification');
+        function showToast() {
+            const todos = app.leftTodos; // Lấy các công việc chưa hoàn thành
+            if (todos.length === 0) {
+                return; // Không hiển thị gì nếu không có công việc
+            }
+            const toast = document.querySelector('.toast-notification');
+
+            // Tạo nội dung thông báo
+            let message = `You have ${todos.length} task(s) to do:\n`;
+            todos.forEach((todo, index) => {
+                message += `${index + 1}. ${todo.title}\n`;
+            });
+
+            toast.style.whiteSpace = 'pre-line';
             toast.textContent = message;
-            toast.style.display = 'block';
-            toast.style.opacity = '1';
+
+
+            // Hiển thị toast
+            toast.classList.add('showing');
+            toast.classList.remove('hiding');
+
             setTimeout(() => {
-                toast.style.opacity = '0';
+                toast.classList.remove('showing');
+                toast.classList.add('hiding');
                 setTimeout(() => {
-                    toast.style.display = 'none';
-                }, 300);
-            }, 5000); // 5s
+                    toast.classList.remove('hiding');
+                }, 500); // Đợi animation kết thúc
+            }, 3000);
         }
 
         // Hiển thị lần đầu
@@ -755,7 +773,7 @@
         // Lặp lại mỗi 1 phút
         setInterval(() => {
             showToast();
-        }, 20000);
+        }, 4000);
     </script>
 </body>
 
