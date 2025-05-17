@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 
 <head>
     <meta charset="UTF-8">
@@ -14,6 +14,7 @@
     <link href="public/css/normalize.css" rel="stylesheet" media="screen">
     <link href="public/css/style.min.css" rel="stylesheet" media="screen">
     <link href="public/css/style.css" rel="stylesheet" media="screen">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap&subset=vietnamese" rel="stylesheet">
 
     <script>
         // Automatically detect and switch language
@@ -108,6 +109,264 @@
         .todo-app {
             display: block !important;
         }
+
+        /* Add styles for overdue tasks and priority indicators */
+        .overdue {
+            color: #ff5252 !important;
+            position: relative;
+        }
+
+        .overdue::before {
+            content: "⚠️";
+            margin-right: 5px;
+        }
+
+        .todo-item .overdue::before {
+            position: absolute;
+            left: -22px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .priority-high {
+            border-left: 4px solid #ff5252 !important;
+        }
+
+        .priority-medium {
+            border-left: 4px solid #ffc107 !important;
+        }
+
+        .priority-low {
+            border-left: 4px solid #8bc34a !important;
+        }
+
+        .sort-controls {
+            margin-bottom: 10px;
+            padding: 8px;
+            background: #fff;
+            border: var(--border);
+            border-radius: var(--border-radius);
+        }
+
+        .sort-controls select {
+            padding: 5px 10px;
+            margin-left: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        /* Thêm CSS cho thông báo nhắc nhở */
+        .reminder-notification {
+            position: fixed;
+            top: 50px;
+            right: 20px;
+            width: 300px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            z-index: 990;
+            overflow: hidden;
+            border: var(--border);
+        }
+
+        .reminder-header {
+            background-color: #ff9800;
+            color: white;
+            padding: 12px 15px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .reminder-header .close-btn {
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        .reminder-body {
+            padding: 15px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .reminder-item {
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .reminder-item:last-child {
+            border-bottom: none;
+        }
+
+        .reminder-item .task-name {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .reminder-item .days-left {
+            font-size: 0.9em;
+            color: #ff5252;
+        }
+
+        .reminder-item .days-left.warning {
+            color: #ff9800;
+        }
+
+        .reminder-footer {
+            padding: 10px 15px;
+            background-color: #f5f5f5;
+            text-align: center;
+            font-size: 0.9em;
+        }
+
+        /* CSS cho nút Thêm mới */
+        .add-new-task-btn {
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 8px 15px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s;
+            margin-left: 15px;
+        }
+
+        .add-new-task-btn:hover {
+            background-color: #45a049;
+        }
+
+        /* CSS cho thanh tiến độ trên mỗi task */
+        .task-progress-bar-container {
+            width: 127px;
+            height: 33px;
+            background-color: #e0e0e0;
+            border-radius: 5px;
+            overflow: hidden;
+            margin: 0 50px;
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .task-progress-bar {
+            height: 100%;
+            background-color: #4caf50;
+            transition: width 0.3s ease;
+        }
+
+        /* Màu sắc tiến độ khác nhau dựa trên % hoàn thành */
+        .task-progress-low .task-progress-bar {
+            background-color: #ff5252;
+            /* Đỏ cho tiến độ thấp (0-30%) */
+        }
+
+        .task-progress-medium .task-progress-bar {
+            background-color: #ffc107;
+            /* Vàng cho tiến độ trung bình (31-70%) */
+        }
+
+        .task-progress-high .task-progress-bar {
+            background-color: #4caf50;
+            /* Xanh cho tiến độ cao (71-100%) */
+        }
+
+        .task-progress-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 8px;
+            color: #000;
+            font-weight: bold;
+        }
+
+        /* Điều chỉnh layout cho các item task để hiển thị thanh tiến độ */
+        .todo-item {
+            display: flex;
+            align-items: center;
+        }
+
+        .todo-content {
+            flex: 1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-right: 5px;
+        }
+
+        /* CSS cho task detail popup */
+        .task-detail-popup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .task-detail-content {
+            background-color: white;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 20px;
+            border: var(--border);
+            box-shadow: var(--box-shadow);
+        }
+
+        .task-detail-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .task-detail-close {
+            font-size: 24px;
+            cursor: pointer;
+            height: 30px;
+            width: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+
+        .task-detail-close:hover {
+            background-color: #f0f0f0;
+        }
+
+        .toast-notification {
+            position: fixed;
+            right: 24px;
+            bottom: 24px;
+            z-index: 989;
+            min-width: 300px;
+            max-width: 400px;
+            padding: 16px 24px;
+            background: #ffffff;
+            color: #333;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            font-size: 16px;
+            line-height: 1.5;
+            transform: translateX(150%);
+            opacity: 0;
+            visibility: hidden;
+            transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55),
+                opacity 0.4s ease,
+                visibility 0.4s ease;
+            border-left: 5px solid #4CAF50;
+        }
     </style>
 
 </head>
@@ -115,7 +374,7 @@
 <body>
     <div class="bg-pattern"></div>
     <div class="todo-wrapper">
-        <div id="todo-app" class="todo-app">
+        <div id="todo-app" class="todo-app" @click="handleClick($event)">
             <div class="container header ">
                 <div class="todo-input">
                     <h1 class="title">
@@ -142,13 +401,13 @@
                         </div>
                     </h1>
                     <div class="add-content-wrapper">
-                        <input type="text" rows="3" class="add-content" placeholder="Add a to-do item..."
-                            v-model="newTodoTitle" @keyup.enter="addTodo" :class='{empty:emptyChecked}' />
+                        <input type="text" rows="3" class="add-content" placeholder="Tìm kiếm công việc..."
+                            v-model="searchQuery" @keyup="searchTodos" :class='{empty:emptyChecked}' />
                         <transition name="tips">
                             <div class="tips" v-if='emptyChecked' style="color:red">💡Please enter content!</div>
                         </transition>
                         <div class="btn-group">
-                            <button class="btn submit-btn" type="button" @click="addTodo">Add</button>
+                            <button class="btn submit-btn" type="button" @click="searchTodos">Tìm kiếm</button>
                             <button class="btn advanced-btn" type="button" @click="showAdvancedAdd = true">
                                 <span class="advanced-icon">+</span>
                             </button>
@@ -163,7 +422,7 @@
             <div class="container main">
                 <div class="todo-list-box">
                     <div class="bar-message">
-                        <input type="button" class="btn btn-label btn-allFinish" value="Mark All Done"
+                        <input type="button" class="btn btn-label btn-allFinish" value="Hoàn thành tất cả"
                             @click="markAllAsCompleted" v-if="todos.length || recycleBin.length" />
                         <template>
                             <div>
@@ -183,16 +442,24 @@
                         </template>
                     </div>
 
+                    <div class="sort-controls" v-if="todos.length">
+                        <span>Sắp xếp theo:</span>
+                        <select v-model="sortBy" @change="applySorting">
+                            <option value="dueDate">Ngày hết hạn gần nhất</option>
+                            <option value="priority">Mức độ ưu tiên cao nhất</option>
+                            <option value="progress">Tiến độ % hoàn thành ít nhất</option>
+                        </select>
+                    </div>
+
                     <ul v-if="!todos.length && showEmptyTips" class="empty-tips">
-                        <li>Add Your First To-Do Item! 📝</li>
-                        <li>Usage Tips 💡:</li>
-                        <li>✔️ Press Enter to submit actions.</li>
-                        <li>✔️ Drag to reorder your to-dos (PC only)</li>
-                        <li>✔️ Double-click to edit slogan and tasks.</li>
-                        <li>✔️ Access quick actions in the right sidebar.</li>
-                        <li>🔒 Your data is stored locally in your browser.</li>
-                        <li>📝 Supports data download and import.
-                        </li>
+                        <li>Thêm công việc đầu tiên của bạn! 📝</li>
+                        <li>Mẹo sử dụng 💡:</li>
+                        <li>✔️ Nhấn Enter để thực hiện hành động.</li>
+                        <li>✔️ Kéo để sắp xếp lại các việc cần làm (chỉ trên PC)</li>
+                        <li>✔️ Nhấp đúp để chỉnh sửa khẩu hiệu và công việc.</li>
+                        <li>✔️ Truy cập các tác vụ nhanh ở thanh bên phải.</li>
+                        <li>🔒 Dữ liệu của bạn được lưu trữ cục bộ trong trình duyệt.</li>
+                        <li>📝 Hỗ trợ tải xuống và nhập dữ liệu.</li>
                     </ul>
 
 
@@ -202,11 +469,24 @@
                         <li v-for='(todo, index) in filteredTodos' :key='todo.id' class='todo-item'
                             @dragenter="dragenter($event, index)" @dragover="dragover($event, index)"
                             @dragstart="dragstart(index)" :data-delay="index * 150 * delayTime" v-show="show"
-                            :draggable="!(editedTodo !== null && editedTodo.id === todo.id)">
-                            <div class="todo-content" :class='{completed:todo.completed}' @dblclick="editdTodo(todo)"
-                                @click="viewTaskDetail(todo)">
+                            :draggable="!(editedTodo !== null && editedTodo.id === todo.id)" :class="{'priority-high': todo.priority === 'high', 
+                                    'priority-medium': todo.priority === 'medium', 
+                                    'priority-low': todo.priority === 'low'}">
+                            <div class="todo-content" :class="{
+                                    'completed': todo.completed,
+                                    'overdue': isOverdue(todo) && !todo.completed
+                                }" @click.stop="viewTaskDetail(todo)">
 
-                                {{todo.title}}</div>
+                                {{todo.title}}
+                            </div>
+                            <div class="task-progress-bar-container" v-if="!todo.removed" :class="{
+                                    'task-progress-low': (todo.progress || 0) <= 30,
+                                    'task-progress-medium': (todo.progress || 0) > 30 && (todo.progress || 0) <= 70,
+                                    'task-progress-high': (todo.progress || 0) > 70
+                                }">
+                                <div class="task-progress-bar" :style="{ width: (todo.progress || 0) + '%' }"></div>
+                                <span class="task-progress-text">{{todo.progress || 0}}%</span>
+                            </div>
                             <div class="todo-btn btn-finish" v-if="!todo.completed" @click="markAsCompleted(todo)">
                             </div>
                             <div class="todo-btn btn-unfinish" v-if="todo.completed" @click="markAsUncompleted(todo)">
@@ -236,8 +516,8 @@
                     </transition-group>
                     <div class="bar-message bar-bottom">
                         <div class="bar-message-text">
-                            <span v-if="leftTodosCount">{{leftTodosCount}} items remaining</span>
-                            <span v-else-if="completedTodosCount">All completed, good job!</span>
+                            <span v-if="leftTodosCount">{{leftTodosCount}} công việc còn lại</span>
+                            <span v-else-if="completedTodosCount">Tất cả đã hoàn thành, làm tốt lắm!</span>
                         </div>
                     </div>
                 </div>
@@ -253,56 +533,72 @@
                     </div>
                     <div class="todo-footer-box">
                         <ul class="todo-func-list filter">
-                            <!-- <li v-if="todos.length || recycleBin.length">Filter：</li> -->
-                            <!-- <li v-if="hasRemovedTodo" ><input type="button" value="Back"
-                                v-if="hasRemovedTodo" @click="restoreTodo()"></li> -->
                             <li>
-                                <input class="btn-small action-showAll" type="button" value="All"
+                                <input class="btn-small action-showAll" type="button" value="Tất cả"
                                     :class="{selected: intention === 'all'}" @click="intention ='all'">
                             </li>
                             <li v-if="completedTodosCount"><input class="btn-small action-progress" type="button"
-                                    value="In Progress" v-if="leftTodosCount"
+                                    value="Đang thực hiện" v-if="leftTodosCount"
                                     :class="{selected: intention === 'ongoing'}" @click="intention ='ongoing'"></li>
                             <li v-if="completedTodosCount">
-                                <input class="btn-small action-completed" type="button" value="Completed"
+                                <input class="btn-small action-completed" type="button" value="Đã hoàn thành"
                                     v-if="completedTodosCount" :class="{selected: intention === 'completed'}"
                                     @click="intention='completed'">
                             </li>
                             <li v-if="recycleBin.length">
                                 <input class="btn-small action-deleted" type="button" v-if="recycleBin.length"
-                                    :class="{selected: intention === 'removed'}" value="Trash"
+                                    :class="{selected: intention === 'removed'}" value="Thùng rác"
                                     @click="intention='removed'" />
                             </li>
                         </ul>
                         <ul class="todo-func-list batch">
-                            <!-- <li v-if="todos.length"></li> -->
                             <li v-if="leftTodosCount">
                                 <input type="button" class="btn-small completed-all" v-if="leftTodosCount"
-                                    value="Finish all" @click="markAllAsCompleted">
+                                    value="Hoàn thành tất cả" @click="markAllAsCompleted">
                             </li>
                             <li v-if="completedTodosCount">
-                                <input type="button" value="Clear Completed" class="btn-small completed-clear"
+                                <input type="button" value="Xóa đã hoàn thành" class="btn-small completed-clear"
                                     v-if="completedTodosCount" @click="clearCompleted">
                             </li>
-                            <li v-if="todos.length"><input type="button" class="btn-small clear-all" value="Clear All"
+                            <li v-if="todos.length"><input type="button" class="btn-small clear-all" value="Xóa tất cả"
                                     @click="clearAll">
                             </li>
                         </ul>
                         <ul class="todo-func-list datasave">
                             <li v-if="leftTodosCount">
-                                <input type="button" value="Export data" class="btn-small  action-download"
+                                <input type="button" value="Xuất dữ liệu" class="btn-small action-download"
                                     id="download" onclick="handleClickDownload()"></input>
                             </li>
                             <li>
-                                <input value="Import(txt/json)" type="button" class="btn-small action-import"
+                                <input value="Nhập dữ liệu (txt/json)" type="button" class="btn-small action-import"
                                     id="import" />
-                                <!-- <input type="file" id="import-file" accept=".txt,.json"
-                                    style="display:none"> -->
                             </li>
                         </ul>
 
                     </div>
 
+                </div>
+            </div>
+
+            <!-- Reminder Notification -->
+            <div class="reminder-notification" v-if="showReminders && upcomingTasks.length > 0">
+                <div class="reminder-header">
+                    <span>Công việc sắp đến hạn</span>
+                    <span class="close-btn" @click="showReminders = false">×</span>
+                </div>
+                <div class="reminder-body">
+                    <div class="reminder-item" v-for="task in upcomingTasks" :key="task.id"
+                        @click.stop="viewTaskDetail(task)" style="cursor:pointer">
+                        <div class="task-name">{{ task.title }}</div>
+                        <div class="days-left" :class="{ 'warning': getDaysLeft(task) > 2 }">
+                            <span v-if="getDaysLeft(task) === 0">Đến hạn hôm nay!</span>
+                            <span v-else-if="getDaysLeft(task) === 1">Còn 1 ngày</span>
+                            <span v-else>Còn {{ getDaysLeft(task) }} ngày</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="reminder-footer">
+                    <span>Nhấp vào công việc để xem chi tiết</span>
                 </div>
             </div>
 
@@ -414,6 +710,17 @@
                                 }}</div>
                         </div>
 
+                        <div class="task-detail-item">
+                            <div class="task-detail-label">Mức độ ưu tiên:</div>
+                            <div class="task-detail-value">
+                                <span v-if="selectedTask.priority === 'high'" style="color: #ff5252;">Cao</span>
+                                <span v-else-if="selectedTask.priority === 'medium'" style="color: #ffc107;">Trung
+                                    bình</span>
+                                <span v-else-if="selectedTask.priority === 'low'" style="color: #8bc34a;">Thấp</span>
+                                <span v-else>Không xác định</span>
+                            </div>
+                        </div>
+
                         <!-- Subtasks Section -->
                         <div class="task-detail-subtasks">
                             <div class="subtasks-header">
@@ -504,7 +811,10 @@
                             <div class="task-detail-value">
                                 <input type="range" min="0" max="100" class="progress-slider"
                                     v-model.number="editingTask.progress">
-                                <span class="progress-text">{{ editingTask.progress }}%</span>
+                                <div class="progress-bar-container">
+                                    <div class="progress-bar" :style="{ width: editingTask.progress + '%' }"></div>
+                                    <span class="progress-text">{{ editingTask.progress }}%</span>
+                                </div>
                             </div>
                         </div>
                         <div class="task-detail-item">
@@ -513,6 +823,17 @@
                                 <select v-model="editingTask.completed" class="task-detail-select">
                                     <option :value="false">Đang thực hiện</option>
                                     <option :value="true">Đã hoàn thành</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="task-detail-item">
+                            <div class="task-detail-label">Mức độ ưu tiên:</div>
+                            <div class="task-detail-value">
+                                <select v-model="editingTask.priority" class="task-detail-select">
+                                    <option value="low">Thấp</option>
+                                    <option value="medium">Trung bình</option>
+                                    <option value="high">Cao</option>
                                 </select>
                             </div>
                         </div>
@@ -581,7 +902,21 @@
                             <div class="task-detail-value">
                                 <input type="range" min="0" max="100" class="progress-slider"
                                     v-model.number="advancedTodo.progress">
-                                <span class="progress-text">{{ advancedTodo.progress }}%</span>
+                                <div class="progress-bar-container">
+                                    <div class="progress-bar" :style="{ width: advancedTodo.progress + '%' }"></div>
+                                    <span class="progress-text">{{ advancedTodo.progress }}%</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="task-detail-item">
+                            <div class="task-detail-label">Mức độ ưu tiên:</div>
+                            <div class="task-detail-value">
+                                <select v-model="advancedTodo.priority" class="task-detail-select">
+                                    <option value="low">Thấp</option>
+                                    <option value="medium">Trung bình</option>
+                                    <option value="high">Cao</option>
+                                </select>
                             </div>
                         </div>
 
@@ -720,11 +1055,16 @@
                         endDate: '',
                         description: '',
                         progress: 0,
-                        subtasks: []
+                        subtasks: [],
+                        priority: 'medium'
                     },
                     showAddAdvancedSubtask: false,
                     editingSubtask: null,
-                    showEditSubtaskForm: false
+                    showEditSubtaskForm: false,
+                    sortBy: 'dueDate',
+                    searchQuery: '',
+                    upcomingTasks: [],
+                    showReminders: true
                 };
             },
             watch: {
@@ -952,6 +1292,7 @@
                             this.todos[index].completed = this.editingTask.completed || false;
                             this.todos[index].progress = this.editingTask.progress || 0;
                             this.todos[index].subtasks = this.editingTask.subtasks || [];
+                            this.todos[index].priority = this.editingTask.priority || 'medium';
 
                             // Also update the selectedTask to show the updated details
                             this.selectedTask = { ...this.todos[index] };
@@ -963,6 +1304,7 @@
                 viewTaskDetail(todo) {
                     // Tạo bản sao sâu của todo
                     this.selectedTask = JSON.parse(JSON.stringify(todo));
+                    console.log('Opening task detail:', this.selectedTask);
 
                     // Đảm bảo các thuộc tính cần thiết tồn tại
                     if (!this.selectedTask.subtasks) {
@@ -1119,7 +1461,8 @@
                         endDate: this.advancedTodo.endDate,
                         description: this.advancedTodo.description,
                         progress: this.advancedTodo.progress,
-                        subtasks: this.advancedTodo.subtasks
+                        subtasks: this.advancedTodo.subtasks,
+                        priority: this.advancedTodo.priority || 'medium'
                     });
                     this.advancedTodo = {
                         title: '',
@@ -1127,7 +1470,8 @@
                         endDate: '',
                         description: '',
                         progress: 0,
-                        subtasks: []
+                        subtasks: [],
+                        priority: 'medium'
                     };
                     this.showAdvancedAdd = false;
                     this.showAddAdvancedSubtask = false;
@@ -1187,6 +1531,98 @@
                     // Đóng form
                     this.showEditSubtaskForm = false;
                     this.editingSubtask = null;
+                },
+                // Check if a task is overdue
+                isOverdue(todo) {
+                    if (!todo.endDate) return false;
+                    const endDate = new Date(todo.endDate);
+                    const today = new Date();
+                    today.setHours(0, 0, 0, 0); // Compare dates only, not time
+                    return endDate < today;
+                },
+                // Check if a task is due soon (within 3 days)
+                isDueSoon(todo) {
+                    if (!todo.endDate) return false;
+                    const endDate = new Date(todo.endDate);
+                    const today = new Date();
+                    today.setHours(0, 0, 0, 0);
+                    const threeDaysFromNow = new Date(today);
+                    threeDaysFromNow.setDate(today.getDate() + 3);
+                    return endDate >= today && endDate <= threeDaysFromNow;
+                },
+                // Apply sorting to the todos list
+                applySorting() {
+                    // The computed filteredTodos property will use these sort settings
+                    // We're just ensuring any UI updates happen
+                    this.$forceUpdate();
+                },
+                // Get days until due date (negative if overdue)
+                getDaysUntilDue(todo) {
+                    if (!todo.endDate) return null;
+                    const endDate = new Date(todo.endDate);
+                    const today = new Date();
+                    today.setHours(0, 0, 0, 0);
+                    const diffTime = endDate - today;
+                    return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                },
+                searchTodos() {
+                    // Implement search functionality
+                    console.log('Searching todos:', this.searchQuery);
+                },
+                checkUpcomingTasks() {
+                    // Lọc các công việc sắp đến hạn trong 3 ngày tới
+                    this.upcomingTasks = this.todos.filter(todo => {
+                        if (!todo.completed && todo.endDate) {
+                            const daysLeft = this.getDaysLeft(todo);
+                            return daysLeft >= 0 && daysLeft <= 3;
+                        }
+                        return false;
+                    });
+
+                    // Sắp xếp theo ngày hết hạn gần nhất
+                    this.upcomingTasks.sort((a, b) => {
+                        return new Date(a.endDate) - new Date(b.endDate);
+                    });
+
+                    // Hiển thị thông báo nếu có công việc sắp đến hạn
+                    this.showReminders = this.upcomingTasks.length > 0;
+                    console.log('Upcoming tasks:', this.upcomingTasks);
+                    console.log('Show reminders:', this.showReminders);
+                },
+                getDaysLeft(todo) {
+                    if (!todo.endDate) return null;
+
+                    const today = new Date();
+                    today.setHours(0, 0, 0, 0);
+
+                    const endDate = new Date(todo.endDate);
+                    endDate.setHours(0, 0, 0, 0);
+
+                    const diffTime = endDate - today;
+                    return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                },
+                searchTodos() {
+                    // Implement search functionality
+                    console.log('Searching todos:', this.searchQuery);
+
+                    // Update filtered todos based on search query
+                    if (!this.searchQuery.trim()) {
+                        // If search query is empty, reset search
+                        this.intention = 'all';
+                        return;
+                    }
+
+                    // Filter todos that match the search query
+                    const query = this.searchQuery.toLowerCase();
+                    this.intention = 'search';
+                },
+                handleClick(event) {
+                    // Đảm bảo popup hiển thị khi click vào công việc
+                    const taskDetail = document.querySelector('.task-detail-popup');
+                    if (this.selectedTask && !taskDetail.contains(event.target) &&
+                        !event.target.closest('.todo-content')) {
+                        this.selectedTask = null;
+                    }
                 }
             },
 
@@ -1204,6 +1640,29 @@
                 // Load slogan from localStorage
                 this.slogan = localStorage.getItem('uiineed-slogan') || "Act Now, Simplify Life.☕";
                 console.log('Vue mounted successfully', this.todos);
+
+                // Tải dữ liệu từ localStorage
+                this.todos = todoStorage.fetch() || [];
+                this.delayTime = 0;
+
+                // Bật transitions
+                setTimeout(() => {
+                    this.show = true;
+                }, 200);
+
+                // Kiểm tra các công việc sắp đến hạn ngay khi ứng dụng khởi động
+                this.checkUpcomingTasks();
+
+                // Hiển thị thông báo ngay sau khi khởi động
+                setTimeout(() => {
+                    console.log('Showing reminders:', this.upcomingTasks.length > 0);
+                    this.showReminders = this.upcomingTasks.length > 0;
+                }, 1000);
+
+                // Cài đặt interval để kiểm tra các công việc sắp đến hạn mỗi giờ
+                setInterval(() => {
+                    this.checkUpcomingTasks();
+                }, 60 * 60 * 1000);
             },
 
             directives: {
@@ -1237,16 +1696,75 @@
                 completedTodosCount: function () {
                     return this.completedTodos.length
                 },
-                filteredTodos: function () {
+                filteredTodos() {
+                    let result;
+
+                    // First filter based on the selected filter
                     if (this.intention === 'ongoing') {
-                        return this.leftTodos
+                        result = this.todos.filter(todo => !todo.completed);
                     } else if (this.intention === 'completed') {
-                        return this.completedTodos
+                        result = this.todos.filter(todo => todo.completed);
                     } else if (this.intention === 'removed') {
-                        return this.recycleBin
+                        result = this.recycleBin;
+                    } else if (this.intention === 'search' && this.searchQuery) {
+                        const query = this.searchQuery.toLowerCase();
+                        result = this.todos.filter(todo =>
+                            todo.title.toLowerCase().includes(query) ||
+                            (todo.description && todo.description.toLowerCase().includes(query))
+                        );
                     } else {
-                        return this.todos
+                        result = this.todos;
                     }
+
+                    // Then sort the results based on chosen criteria
+                    return result.slice().sort((a, b) => {
+                        // Determine sort values based on sort criteria
+                        switch (this.sortBy) {
+                            case 'dateCreated':
+                                // Ngày tạo gần nhất (ID lớn hơn = mới hơn)
+                                return b.id - a.id;
+
+                            case 'dueDate':
+                                // Xử lý quá hạn lên đầu, sau đó đến hạn gần hơn lên trên
+                                const today = new Date();
+                                today.setHours(0, 0, 0, 0);
+
+                                const aEndDate = a.endDate ? new Date(a.endDate) : null;
+                                const bEndDate = b.endDate ? new Date(b.endDate) : null;
+
+                                // Nếu không có ngày hết hạn, đặt xuống cuối
+                                if (!aEndDate && !bEndDate) return 0;
+                                if (!aEndDate) return 1;
+                                if (!bEndDate) return -1;
+
+                                const aOverdue = aEndDate < today;
+                                const bOverdue = bEndDate < today;
+
+                                // Nếu một cái quá hạn và cái còn lại không
+                                if (aOverdue && !bOverdue) return -1;
+                                if (!aOverdue && bOverdue) return 1;
+
+                                // Nếu cả hai đều quá hạn hoặc chưa quá hạn, sắp xếp theo ngày gần nhất
+                                return aEndDate - bEndDate;
+
+                            case 'priority':
+                                // Mức độ ưu tiên cao nhất lên đầu
+                                const priorityValues = { high: 3, medium: 2, low: 1, undefined: 0 };
+                                const aPriority = priorityValues[a.priority] || 0;
+                                const bPriority = priorityValues[b.priority] || 0;
+                                return bPriority - aPriority;
+
+                            case 'progress':
+                                // Tiến độ hoàn thành ít nhất lên đầu
+                                const aProgress = a.progress || 0;
+                                const bProgress = b.progress || 0;
+                                return aProgress - bProgress;
+
+                            default:
+                                // Mặc định theo ngày tạo gần nhất
+                                return b.id - a.id;
+                        }
+                    });
                 },
                 showEmptyTips() {
                     return this.filteredTodos.length === 0 && this.intention !== 'removed';
@@ -1352,69 +1870,104 @@
         This is a notification message! Hello World!
     </div>
     <script>
-        // filepath: d:\Study\ITSS2\ITSS2_japanese2\index.html
-        // ...existing code...
-
-        function showToast() {
-            const todos = app.leftTodos; // Lấy các công việc chưa hoàn thành
-            if (todos.length === 0) {
-                return; // Không hiển thị gì nếu không có công việc
-            }
-            // Chọn một công việc ngẫu nhiên
-            const randomIndex = Math.floor(Math.random() * todos.length);
-            const randomTodo = todos[randomIndex];
-
-            // Tính thời gian còn lại
-            let timeRemaining = '';
-            if (randomTodo.endDate) {
-                const endDate = new Date(randomTodo.endDate);
-                const now = new Date();
-                const diffTime = endDate - now;
-                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-
-                if (diffDays > 0) {
-                    timeRemaining = `còn ${diffDays} ngày`;
-                } else if (diffDays === 0) {
-                    timeRemaining = 'hết hạn hôm nay';
-                } else {
-                    timeRemaining = `đã quá hạn ${Math.abs(diffDays)} ngày`;
+        // Override the original showToast function with our improved version
+        window.addEventListener('load', function () {
+            // We need to replace the original showToast function with our enhanced version
+            window.showToast = function () {
+                const todos = app.leftTodos; // Lấy các công việc chưa hoàn thành
+                if (todos.length === 0) {
+                    return; // Không hiển thị gì nếu không có công việc
                 }
-            } else {
-                timeRemaining = 'chưa có hạn';
-            }
 
-            const toast = document.querySelector('.toast-notification');
+                // First check for overdue tasks
+                const overdueTasks = todos.filter(todo => app.isOverdue(todo));
+                // Then check for tasks due soon
+                const dueSoonTasks = todos.filter(todo => app.isDueSoon(todo) && !app.isOverdue(todo));
 
-            // Tạo nội dung thông báo
-            let message = `Nhắc nhở: "${randomTodo.title}"\n`;
-            message += `Thời gian: ${timeRemaining}`;
+                let selectedTodo;
+                let notificationType = 'normal';
 
+                // Prioritize overdue tasks, then due soon tasks, then random tasks
+                if (overdueTasks.length > 0) {
+                    selectedTodo = overdueTasks[Math.floor(Math.random() * overdueTasks.length)];
+                    notificationType = 'overdue';
+                } else if (dueSoonTasks.length > 0) {
+                    selectedTodo = dueSoonTasks[Math.floor(Math.random() * dueSoonTasks.length)];
+                    notificationType = 'due-soon';
+                } else {
+                    selectedTodo = todos[Math.floor(Math.random() * todos.length)];
+                }
 
-            toast.style.whiteSpace = 'pre-line';
-            toast.textContent = message;
+                // Tính thời gian còn lại
+                let timeRemaining = '';
+                let timeMessage = '';
+                if (selectedTodo.endDate) {
+                    const endDate = new Date(selectedTodo.endDate);
+                    const now = new Date();
+                    const diffTime = endDate - now;
+                    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
+                    if (diffDays > 0) {
+                        timeRemaining = `còn ${diffDays} ngày`;
+                        timeMessage = 'Hãy hoàn thành đúng hạn!';
+                    } else if (diffDays === 0) {
+                        timeRemaining = 'hết hạn hôm nay';
+                        timeMessage = 'Hãy hoàn thành ngay hôm nay!';
+                    } else {
+                        timeRemaining = `đã quá hạn ${Math.abs(diffDays)} ngày`;
+                        timeMessage = 'Cần hoàn thành gấp!';
+                    }
+                } else {
+                    timeRemaining = 'chưa có hạn';
+                    timeMessage = 'Hãy thiết lập hạn!';
+                }
 
-            // Hiển thị toast
-            toast.classList.add('showing');
-            toast.classList.remove('hiding');
+                const toast = document.querySelector('.toast-notification');
 
-            setTimeout(() => {
-                toast.classList.remove('showing');
-                toast.classList.add('hiding');
+                // Remove previous classes
+                toast.classList.remove('overdue', 'due-soon', 'normal');
+                // Add current type class
+                toast.classList.add(notificationType);
+
+                // Tạo nội dung thông báo
+                let message = '';
+
+                if (notificationType === 'overdue') {
+                    message += `⚠️ CÔNG VIỆC QUÁ HẠN: "${selectedTodo.title}"\n`;
+                    message += `Thời gian: ${timeRemaining}\n`;
+                    message += `${timeMessage}`;
+                } else if (notificationType === 'due-soon') {
+                    message += `⏰ CÔNG VIỆC SẮP ĐẾN HẠN: "${selectedTodo.title}"\n`;
+                    message += `Thời gian: ${timeRemaining}\n`;
+                    message += `${timeMessage}`;
+                } else {
+                    message += `Nhắc nhở: "${selectedTodo.title}"\n`;
+                    message += `Thời gian: ${timeRemaining}`;
+                }
+
+                toast.style.whiteSpace = 'pre-line';
+                toast.textContent = message;
+
+                // Hiển thị toast
+                toast.classList.add('showing');
+                toast.classList.remove('hiding');
+
                 setTimeout(() => {
-                    toast.classList.remove('hiding');
-                }, 500); // Đợi animation kết thúc
-            }, 3000);
-        }
+                    toast.classList.remove('showing');
+                    toast.classList.add('hiding');
+                    setTimeout(() => {
+                        toast.classList.remove('hiding');
+                    }, 500); // Đợi animation kết thúc
+                }, 5000); // Show for 5 seconds
+            };
 
-        // Hiển thị lần đầu
-        showToast();
+            // Trigger notification shortly after page loads
+            setTimeout(showToast, 1000);
 
-        // Lặp lại mỗi 1 phút
-        setInterval(() => {
-            showToast();
-        }, 4000);
+            // Show notifications every 30 seconds
+            setInterval(showToast, 30000);
+        });
     </script>
 </body>
 
-</html
+</html>
