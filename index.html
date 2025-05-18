@@ -348,7 +348,7 @@
         .toast-notification {
             position: fixed;
             right: 24px;
-            bottom: 24px;
+            top: 24px;
             z-index: 989;
             min-width: 300px;
             max-width: 400px;
@@ -599,75 +599,6 @@
                 </div>
                 <div class="reminder-footer">
                     <span>Nhấp vào công việc để xem chi tiết</span>
-                </div>
-            </div>
-
-            <!-- Custom Info -->
-            <div class="nav">
-                <div class="github">
-                    <a href="https://github.com/ricocc/uiineed-todo-list?ref=opensource-todo" target="_blank"
-                        class="social-link" draggable="false">
-                        <img src="public/img/social/github.svg" class="ic-social" alt="" draggable="false">
-                    </a>
-                </div>
-                <!-- <div class="about">
-                        <div class="info">
-                            <div
-                                class="info-ico"
-                                @click="togglePop"
-                                :style="{ fontWeight: popShow ? 'normal' : 'bold' }">
-                                About
-                            </div>
-                            <div class="popup animated popIn" v-if="!popShow">
-                                <div class="author">
-                                    <img src="public/img/author.jpg" alt="">
-                                    RicoCC
-                                </div>
-                                <div class="author-info">
-                                    <div class="author-desc">
-                                        A simple one who loves design and code.
-                                    </div>
-                                </div>
-                                <div class="social">
-                                    <a href="mailto:ricocc@qq.com" class="social-link">
-                                        <img src="public/img/social/mail.svg" class="ic-social" alt="">
-                                    </a>
-                                    <a
-                                        href="https://www.xiaohongshu.com/user/profile/5f2b6903000000000101f51f?ref=uiineed-todo"
-                                        target="_blank"
-                                        class="social-link">
-                                        <img src="public/img/social/xiaohongshu.svg" class="ic-social" alt="">
-                                    </a>
-
-                                    <a
-                                        href="https://dribbble.com/rrrricocc?=todo-en"
-                                        target="_blank"
-                                        class="social-link">
-                                        <img src="public/img/social/dribbble.svg" class="ic-social" alt="">
-                                    </a>
-                                    <a
-                                        href="https://bsky.app/profile/ricocc.bsky.social"
-                                        target="_blank"
-                                        class="social-link">
-                                        <img src="public/img/social/bluesky.svg" class="ic-social" alt="">
-                                    </a>
-                                    <a href="https://x.com/ricouii" target="_blank" class="social-link">
-                                        <img src="public/img/social/x.svg" class="ic-social" alt="">
-                                    </a>
-                                </div>
-
-                                <a href="https://blog.ricocc.com/?ref=todo" target="_blank" class="inspiration">🔖Rico's Blog↗
-                                </a>
-                            </div>
-                        </div>
-                    </div> -->
-
-                <!-- witch Chinese Or English as homepage as required -->
-                <div class="language switch-language">
-                    <a href="javascript:void(0)" class="en active" draggable="false">En</a>
-                    <span>/</span>
-                    <a href="index-zh.html" target="_self" class="zh" draggable="false"
-                        @click="saveLanguage('zh')">中</a>
                 </div>
             </div>
 
@@ -1139,11 +1070,28 @@
                     this.checkEmpty = false;
                     this.delayTime = '0';
                 },
+                // markAsCompleted: function (todo) {
+                //     todo.completed = true;
+                // },
+                // markAsUncompleted: function (todo) {
+                //     todo.completed = false;
+                // },
+                // Sửa lại phương thức markAsCompleted
                 markAsCompleted: function (todo) {
+                    // Lưu lại tiến độ cũ trước khi đánh dấu hoàn thành
+                    if (!todo.previousProgress) {
+                        todo.previousProgress = todo.progress || 0;
+                    }
                     todo.completed = true;
+                    todo.progress = 100; // Set tiến độ lên 100% khi hoàn thành
                 },
+
+                // Sửa lại phương thức markAsUncompleted  
                 markAsUncompleted: function (todo) {
                     todo.completed = false;
+                    // Khôi phục lại tiến độ trước đó
+                    todo.progress = todo.previousProgress || 0;
+                    delete todo.previousProgress; // Xóa giá trị đã lưu
                 },
                 markAllAsCompleted: function () {
                     confirm('Confirm to mark all as completed?').then((confirmed) => {
@@ -1867,7 +1815,7 @@
 
     <!-- Toast Notification -->
     <div class="toast-notification">
-        This is a notification message! Hello World!
+        This is a notification message!
     </div>
     <script>
         // Override the original showToast function with our improved version

@@ -1862,7 +1862,7 @@ span.shortcut-name {
 .toast-notification {
   position: fixed;
   right: 24px;
-  bottom: 24px;
+  top: 24px;
   z-index: 9999;
   min-width: 300px;
   max-width: 400px;
